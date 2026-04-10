@@ -21,6 +21,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+//ADD NEW ORDER
 app.post("/api/orders/add",async (req,res) => {
     const orderData = req.body;
 
@@ -33,6 +34,17 @@ app.post("/api/orders/add",async (req,res) => {
     }
 })
 
+//GET ALL ORDERS
+app.get("/api/orders",async (req,res) => {
+    try {
+        const orders = await Order.find();
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).send("Error fetching orders");
+    }
+})
+
+//GET ORDER BY ID
 app.get("/api/orders/:orderId",async (req,res) => {
     try{
         const orders = await Order.findOne({
@@ -44,6 +56,7 @@ app.get("/api/orders/:orderId",async (req,res) => {
     }
 })
 
+//DELETE ORDER
 app.delete("/api/orders/delete/:orderId",async (req,res) => {
     console.log(req.params.orderId);
     try {
@@ -59,6 +72,7 @@ app.delete("/api/orders/delete/:orderId",async (req,res) => {
     }
 })
 
+//UPDATE ORDER
 app.put("/api/orders/:orderId",async (req,res) => {
     const {Product,Quantity} = req.body;
     try {
